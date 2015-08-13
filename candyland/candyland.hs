@@ -65,12 +65,12 @@ gumdrop_pink_space = Space { spColor = Pink, spSticky = False, spLabel = Gumdrop
 pink_spaces :: Course
 pink_spaces = shuffle (replicate 8 candy_cane_pink_space ++ replicate 8 gumdrop_pink_space)
 
-detuple :: [(a,a,a,a,a,a)] -> [a]
-detuple ((a,b,c,d,e,f):xs) = a : b : c : d : e : f : detuple xs
-detuple _          = []
+detuple6 :: [(a,a,a,a,a,a)] -> [a]
+detuple6 ((a,b,c,d,e,f):xs) = a : b : c : d : e : f : detuple6 xs
+detuple6 _          = []
 
 course :: Course
-course = detuple <$> (zip6 <$> purple_spaces <*> yellow_spaces <*> blue_spaces <*> orange_spaces <*> green_spaces <*> pink_spaces)
+course = detuple6 <$> (zip6 <$> purple_spaces <*> yellow_spaces <*> blue_spaces <*> orange_spaces <*> green_spaces <*> pink_spaces)
 
 shuffle :: [a] -> IO [a]
 shuffle l = shuffle' l []
