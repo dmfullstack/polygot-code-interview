@@ -79,9 +79,37 @@ shuffle l = shuffle' l []
                             let (lead, x:xs) = splitAt k l
                             shuffle' (lead ++ xs) (x:acc)
 
--- make_course :: Int -> Course
--- make_course steps = take steps $ cycle [purple_space, yellow_space, blue_space, orange_space, green_space, pink_space]
 
 data Direction = Backward | Forward deriving Show
 data Card = Card {cColor :: Color, cLabel :: Label, cDirection :: Direction} deriving Show
-type Deck = [Card]
+type Deck = IO [Card]
+
+purple_card :: Card
+purple_card = Card { cColor = Purple, cLabel = Blank, cDirection = Forward }
+
+yellow_card :: Card
+yellow_card = Card { cColor = Yellow, cLabel = Blank, cDirection = Forward }
+
+blue_card :: Card
+blue_card = Card { cColor = Blue, cLabel = Blank, cDirection = Forward }
+
+orange_card :: Card
+orange_card = Card { cColor = Orange, cLabel = Blank, cDirection = Forward }
+
+green_card :: Card
+green_card = Card { cColor = Green, cLabel = Blank, cDirection = Forward }
+
+candy_cane_forward_pink_card :: Card
+candy_cane_forward_pink_card = Card { cColor = Pink, cLabel = CandyCane, cDirection = Forward }
+
+candy_cane_reverse_pink_card :: Card
+candy_cane_reverse_pink_card = Card { cColor = Pink, cLabel = CandyCane, cDirection = Backward }
+
+gumdrop_forward_pink_card :: Card
+gumdrop_forward_pink_card = Card { cColor = Pink, cLabel = Gumdrop, cDirection = Forward }
+
+gumdrop_reverse_pink_card :: Card
+gumdrop_reverse_pink_card = Card { cColor = Pink, cLabel = Gumdrop, cDirection = Backward }
+
+deck :: Deck
+deck = shuffle (replicate 10 purple_card ++ replicate 9 yellow_card ++ replicate 10 blue_card ++ replicate 10 orange_card ++ replicate 9 green_card ++ replicate 2 candy_cane_forward_pink_card ++ replicate 2 gumdrop_forward_pink_card ++ replicate 2 candy_cane_reverse_pink_card ++ replicate 2 gumdrop_reverse_pink_card)
