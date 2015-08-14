@@ -6,8 +6,8 @@ import Data.List
 import Control.Applicative
 import Control.Lens
 
-data Color = Purple | Yellow | Blue | Orange | Green | Pink deriving Show
-data Label = Blank | CandyCane | Gumdrop deriving Show
+data Color = Purple | Yellow | Blue | Orange | Green | Pink deriving (Show, Eq)
+data Label = Blank | CandyCane | Gumdrop deriving (Show, Eq)
 data Space = Space {spColor :: Color, spSticky :: Bool, spLabel :: Label} deriving Show
 type Course = IO [Space]
 
@@ -113,3 +113,40 @@ gumdrop_reverse_pink_card = Card { cColor = Pink, cLabel = Gumdrop, cDirection =
 
 deck :: Deck
 deck = shuffle (replicate 10 purple_card ++ replicate 9 yellow_card ++ replicate 10 blue_card ++ replicate 10 orange_card ++ replicate 9 green_card ++ replicate 2 candy_cane_forward_pink_card ++ replicate 2 gumdrop_forward_pink_card ++ replicate 2 candy_cane_reverse_pink_card ++ replicate 2 gumdrop_reverse_pink_card)
+
+
+go_to_color :: Course -> Color -> Course
+go_to_color course color = do
+  color_of_space <- spColor <$> head <$> course
+  if color_of_space == color
+  then course
+  else do
+    go_to_color (tail <$> course) color
+
+turn :: Deck -> Course -> Int -> IO ()
+turn deck course round_num = do
+  should_end <- null <$> course
+  if should_end
+  then putStrLn "END."
+  else do
+    putStrLn "Hit enter for next round."
+    _ <- getLine
+    putStrLn ("You are on round " ++ (show $ round_num))
+    course_loc <- show <$> spColor <$> head <$> course
+    putStrLn ("You are on a " ++ course_loc ++ " square.")
+    course_len <- show <$> length <$> tail <$> course
+    putStrLn ("There are " ++ course_len ++ " squares left in the course.")
+    top_of_deck <- cColor <$> head <$> deck
+    putStrLn ("You drew a " ++ (show top_of_deck) ++ " card and skip to the next " ++
+      (show top_of_deck) ++ " square.")
+    deck_len <- show <$> length <$> tail <$> deck
+    putStrLn ("There are " ++ deck_len ++ " cards left in the deck.")
+    turn (tail <$> deck) (go_to_color (tail <$> course) top_of_deck) (round_num + 1)
+
+game :: Deck -> Course -> IO ()
+game deck course = do
+  putStrLn "Welcome to CandyLand!"
+  turn deck course 0
+
+main :: IO ()
+main = game deck course
