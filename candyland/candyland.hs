@@ -150,3 +150,9 @@ game deck course = do
 
 main :: IO ()
 main = game deck course
+
+-- TODO:
+-- Solve speed problem
+-- Implement sticky
+-- Implement reverse direction
+-- Implement the 2x shortcuts
