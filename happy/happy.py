@@ -6,16 +6,16 @@
 # whether a number is happy or not.
 
 def square(x):
-  return x * x
+    return x * x
 
 # Take a number and turn it into a vector of digits
 def digits(num):
-  return [int(i) for i in str(num)]
+    return [int(i) for i in str(num)]
 
 def is_happy(num):
-  if num == 1:
-    return True
-  elif num == 4:
-    return False
-  else:
-    return is_happy(sum(map(square, digits(num))))
+    if num == 1:
+        return True
+    elif num == 4:
+        return False
+    else:
+        return is_happy(sum(map(square, digits(num))))
