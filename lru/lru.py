@@ -21,20 +21,20 @@ class LRUCache:
 
 cache = LRUCache(max_size = 3)
 cache.set('apple', 1)
-print(cache.get('apple') == 1)
-print(cache.get('pear') == None)
+assert cache.get('apple') == 1
+assert cache.get('pear') == None
 cache.set('pear', 2)
-print(cache.get('apple') == 1)
-print(cache.get('pear') == 2)
+assert cache.get('apple') == 1
+assert cache.get('pear') == 2
 cache.set('pear', 9)
-print(cache.get('apple') == 1)
-print(cache.get('pear') == 9)
+assert cache.get('apple') == 1
+assert cache.get('pear') == 9
 cache.set('banana', 3)
-print(cache.get('apple') == 1)
-print(cache.get('pear') == 9)
-print(cache.get('banana') == 3)
+assert cache.get('apple') == 1
+assert cache.get('pear') == 9
+assert cache.get('banana') == 3
 cache.set('ford', 4)
-print(cache.get('apple') == None)
-print(cache.get('pear') == 9)
-print(cache.get('banana') == 3)
-print(cache.get('ford') == 4)
+assert cache.get('apple') == None
+assert cache.get('pear') == 9
+assert cache.get('banana') == 3
+assert cache.get('ford') == 4
